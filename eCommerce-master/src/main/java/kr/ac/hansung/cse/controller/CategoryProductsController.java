@@ -72,6 +72,13 @@ public class CategoryProductsController {
 
 	@DeleteMapping("/{productId}")
 	public ResponseEntity<Void> removeProduct(@PathVariable Long categoryId, @PathVariable Long productId) {
+		Category parent = categoryService.getCategoryById(productId);
+		Category child = categoryService.getCategoryById(categoryId);
 
+		if(parent == null || child == null) return ResponseEntity.notFound().build();
+		else{
+			categoryService.removeChildCategory(child,parent);
+			return ResponseEntity.noContent().build();
+		}
 	}
 }

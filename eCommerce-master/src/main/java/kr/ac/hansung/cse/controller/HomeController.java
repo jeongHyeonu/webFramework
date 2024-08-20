@@ -25,7 +25,7 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(HttpServletRequest request,  Locale locale, Model model) {
 			
-		
+		System.out.println(request.getRequestURL().toString());
 		logger.info("info level: Welcome home! The client local is {}", locale);
 		
 		String url = request.getRequestURL().toString();

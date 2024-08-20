@@ -7,6 +7,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import kr.ac.hansung.cse.entity.Category;
 import kr.ac.hansung.cse.entity.Product;
 import kr.ac.hansung.cse.exception.NotFoundException;
 import kr.ac.hansung.cse.service.ProductService;
@@ -66,8 +67,13 @@ public class ProductController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Product> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductDto request) {
-
-
+		Product product = productService.getProductById(id);
+		if (product == null) {
+			throw new NotFoundException(id);
+		}
+		product.setName(request.getName());
+		product.setPrice(request.getPrice());
+		return ResponseEntity.ok(product);
 	}
 
 	@DeleteMapping("/{id}")
