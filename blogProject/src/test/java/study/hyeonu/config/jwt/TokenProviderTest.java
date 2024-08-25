@@ -8,8 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import study.hyeonu.domain.User;
-import study.hyeonu.jwt.JwtProperties;
-import study.hyeonu.jwt.TokenProvider;
 import study.hyeonu.repository.UserRepository;
 
 import java.time.Duration;
@@ -17,7 +15,6 @@ import java.util.Date;
 import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest

@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import study.hyeonu.config.error.exception.ArticleNotFoundException;
 import study.hyeonu.domain.Article;
 import study.hyeonu.dto.AddArticleRequest;
 import study.hyeonu.dto.UpdateArticleRequest;
@@ -27,7 +28,7 @@ public class BlogService {
 
     public Article findById(long id) {
         return blogRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
+                .orElseThrow(ArticleNotFoundException::new);
     }
 
     public void delete(long id) {

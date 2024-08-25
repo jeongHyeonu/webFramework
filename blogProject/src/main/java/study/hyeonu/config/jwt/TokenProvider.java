@@ -1,4 +1,4 @@
-package study.hyeonu.jwt;
+package study.hyeonu.config.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;

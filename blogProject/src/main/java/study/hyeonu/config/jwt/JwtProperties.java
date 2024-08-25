@@ -1,4 +1,4 @@
-package study.hyeonu.jwt;
+package study.hyeonu.config.jwt;
 
 import lombok.Getter;
 import lombok.Setter;

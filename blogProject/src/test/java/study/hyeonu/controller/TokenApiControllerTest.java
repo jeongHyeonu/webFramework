@@ -19,7 +19,7 @@ import study.hyeonu.config.jwt.JwtFactory;
 import study.hyeonu.domain.RefreshToken;
 import study.hyeonu.domain.User;
 import study.hyeonu.dto.CreateAccessTokenRequest;
-import study.hyeonu.jwt.JwtProperties;
+import study.hyeonu.config.jwt.JwtProperties;
 import study.hyeonu.repository.RefreshTokenRepository;
 import study.hyeonu.repository.UserRepository;
 

@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import study.hyeonu.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import study.hyeonu.config.oauth.OAuth2SuccessHandler;
 import study.hyeonu.config.oauth.OAuth2UserCustomService;
-import study.hyeonu.jwt.TokenProvider;
+import study.hyeonu.config.jwt.TokenProvider;
 import study.hyeonu.repository.RefreshTokenRepository;
 import study.hyeonu.service.UserService;
 

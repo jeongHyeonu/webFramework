@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import study.hyeonu.domain.RefreshToken;
-import study.hyeonu.jwt.TokenProvider;
+import study.hyeonu.config.jwt.TokenProvider;
 import study.hyeonu.repository.RefreshTokenRepository;
 
 @RequiredArgsConstructor

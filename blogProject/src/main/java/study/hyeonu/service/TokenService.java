@@ -3,7 +3,7 @@ package study.hyeonu.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import study.hyeonu.domain.User;
-import study.hyeonu.jwt.TokenProvider;
+import study.hyeonu.config.jwt.TokenProvider;
 
 import java.time.Duration;
 

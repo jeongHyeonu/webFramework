@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import study.hyeonu.domain.RefreshToken;
 import study.hyeonu.domain.User;
-import study.hyeonu.jwt.TokenProvider;
+import study.hyeonu.config.jwt.TokenProvider;
 import study.hyeonu.repository.RefreshTokenRepository;
 import study.hyeonu.service.UserService;
 import study.hyeonu.util.CookieUtil;
