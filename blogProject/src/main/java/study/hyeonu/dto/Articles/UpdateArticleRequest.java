@@ -1,4 +1,4 @@
-package study.hyeonu.dto;
+package study.hyeonu.dto.Articles;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

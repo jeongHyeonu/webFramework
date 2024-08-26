@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import study.hyeonu.domain.Article;
-import study.hyeonu.dto.ArticleListViewResponse;
-import study.hyeonu.dto.ArticleViewResponse;
+import study.hyeonu.dto.Articles.ArticleListViewResponse;
+import study.hyeonu.dto.Articles.ArticleViewResponse;
 import study.hyeonu.service.BlogService;
 
 import java.util.List;

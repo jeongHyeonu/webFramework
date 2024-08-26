@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
@@ -48,4 +49,10 @@ public class Article {
         this.title=title;
         this.content=content;
     }
+
+    // 댓글
+    // mappedBy 는 자식 엔티티가 부모 엔티티와의 관계를 나타냄
+    // cascade는 부모 엔티티 변경 시 자식 엔티티에 전파하기 위한 방법 중 삭제에 관한 설정값
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
 }

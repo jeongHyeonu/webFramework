@@ -69,6 +69,33 @@ if (createButton) {
 }
 
 
+
+// 댓글 생성 기능
+const commentCreateButton = document.getElementById('comment-create-btn');
+
+if (commentCreateButton) {
+    // 등록 버튼을 클릭하면 /api/articles로 요청을 보낸다
+    commentCreateButton.addEventListener('click', event => {
+        const articleId = document.getElementById('article-id').value;
+        body = JSON.stringify({
+            articleId: articleId,
+            content: document.getElementById('content').value
+        });
+        function success() {
+            alert('등록 완료되었습니다.');
+            location.replace('/articles/'+articleId);
+        };
+        function fail() {
+            alert('등록 실패했습니다.');
+            location.replace('/articles/'+articleId);
+        };
+
+        httpRequest('POST','/api/comments', body, success, fail)
+    });
+}
+
+
+
 // 로그아웃 기능
 const logoutButton = document.getElementById('logout-btn');
 

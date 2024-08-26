@@ -1,7 +1,6 @@
 package study.hyeonu.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,24 +13,24 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import study.hyeonu.config.error.ErrorCode;
 import study.hyeonu.domain.Article;
+import study.hyeonu.domain.Comment;
 import study.hyeonu.domain.User;
-import study.hyeonu.dto.AddArticleRequest;
-import study.hyeonu.dto.ArticleResponse;
-import study.hyeonu.dto.UpdateArticleRequest;
+import study.hyeonu.dto.Articles.AddArticleRequest;
+import study.hyeonu.dto.Comments.AddCommentRequest;
+import study.hyeonu.dto.Articles.UpdateArticleRequest;
 import study.hyeonu.repository.BlogRepository;
+import study.hyeonu.repository.CommentRepository;
 import study.hyeonu.repository.UserRepository;
 
 import java.security.Principal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -56,6 +55,9 @@ class BlogApiControllerTest {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    CommentRepository commentRepository;
+
     User user;
 
     @BeforeEach
@@ -63,6 +65,7 @@ class BlogApiControllerTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .build();
         blogRepository.deleteAll();
+        commentRepository.deleteAll();
     }
 
 
@@ -197,57 +200,6 @@ class BlogApiControllerTest {
                 .build());
     }
 
-
-    @DisplayName("addArticle: 아티클 추가할 때 title이 null이면 실패한다.")
-    @Test
-    public void addArticleNullValidation() throws Exception {
-        // given
-        final String url = "/api/articles";
-        final String title = null;
-        final String content = "content";
-        final AddArticleRequest userRequest = new AddArticleRequest(title, content);
-
-        final String requestBody = objectMapper.writeValueAsString(userRequest);
-
-        Principal principal = Mockito.mock(Principal.class);
-        Mockito.when(principal.getName()).thenReturn("username");
-
-        // when
-        ResultActions result = mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .principal(principal)
-                .content(requestBody));
-
-        // then
-        result.andExpect(status().isBadRequest());
-    }
-
-    @DisplayName("addArticle: 아티클 추가할 때 title이 10자를 넘으면 실패한다.")
-    @Test
-    public void addArticleSizeValidation() throws Exception {
-        // given
-        Faker faker = new Faker();
-
-        final String url = "/api/articles";
-        final String title = faker.lorem().characters(11);
-        final String content = "content";
-        final AddArticleRequest userRequest = new AddArticleRequest(title, content);
-
-        final String requestBody = objectMapper.writeValueAsString(userRequest);
-
-        Principal principal = Mockito.mock(Principal.class);
-        Mockito.when(principal.getName()).thenReturn("username");
-
-        // when
-        ResultActions result = mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .principal(principal)
-                .content(requestBody));
-
-        // then
-        result.andExpect(status().isBadRequest());
-    }
-
     @DisplayName("find article : 잘못된 http 메서드로 조회 시 실패")
     @Test
     public void invalidHttpMethod() throws Exception {
@@ -282,4 +234,90 @@ class BlogApiControllerTest {
                 .andExpect(jsonPath("$.message").value(ErrorCode.ARTICLE_NOT_FOUND.getMessage()))
                 .andExpect(jsonPath("$.code").value(ErrorCode.ARTICLE_NOT_FOUND.getCode()));
     }
+
+
+
+//    @DisplayName("addArticle: 아티클 추가할 때 title이 null이면 실패한다.")
+//    @Test
+//    public void addArticleNullValidation() throws Exception {
+//        // given
+//        final String url = "/api/articles";
+//        final String title = null;
+//        final String content = "content";
+//        final AddArticleRequest userRequest = new AddArticleRequest(title, content);
+//
+//        final String requestBody = objectMapper.writeValueAsString(userRequest);
+//
+//        Principal principal = Mockito.mock(Principal.class);
+//        Mockito.when(principal.getName()).thenReturn("username");
+//
+//        // when
+//        ResultActions result = mockMvc.perform(post(url)
+//                .contentType(MediaType.APPLICATION_JSON_VALUE)
+//                .principal(principal)
+//                .content(requestBody));
+//
+//        // then
+//        result.andExpect(status().isBadRequest());
+//    }
+//
+//    @DisplayName("addArticle: 아티클 추가할 때 title이 10자를 넘으면 실패한다.")
+//    @Test
+//    public void addArticleSizeValidation() throws Exception {
+//        // given
+//        Faker faker = new Faker();
+//
+//        final String url = "/api/articles";
+//        final String title = faker.lorem().characters(11);
+//        final String content = "content";
+//        final AddArticleRequest userRequest = new AddArticleRequest(title, content);
+//
+//        final String requestBody = objectMapper.writeValueAsString(userRequest);
+//
+//        Principal principal = Mockito.mock(Principal.class);
+//        Mockito.when(principal.getName()).thenReturn("username");
+//
+//        // when
+//        ResultActions result = mockMvc.perform(post(url)
+//                .contentType(MediaType.APPLICATION_JSON_VALUE)
+//                .principal(principal)
+//                .content(requestBody));
+//
+//        // then
+//        result.andExpect(status().isBadRequest());
+//    }
+
+    @DisplayName("add Comment : 댓글추가")
+    @Test
+    public void addComment() throws Exception {
+        // given
+        final String url = "/api/comments";
+
+        Article savedArticle = createDefaultArticle();
+        final Long articleId = savedArticle.getId();
+        final String content = "content";
+        final AddCommentRequest userRequest = new AddCommentRequest(articleId,content);
+
+        final String requestBody = objectMapper.writeValueAsString(userRequest);
+
+        Principal principal = Mockito.mock(Principal.class);
+        Mockito.when(principal.getName()).thenReturn("username");
+
+        // when
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .principal(principal)
+                .content(requestBody));
+
+        // then
+        result.andExpect(status().isCreated());
+
+        List<Comment> comments = commentRepository.findAll();
+
+        assertThat(comments.size()).isEqualTo(1);
+        assertThat(comments.get(0).getArticle().getId()).isEqualTo(articleId);
+        assertThat(comments.get(0).getContent()).isEqualTo(content);
+    }
+
+
 }

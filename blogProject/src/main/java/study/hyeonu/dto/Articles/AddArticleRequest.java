@@ -1,4 +1,4 @@
-package study.hyeonu.dto;
+package study.hyeonu.dto.Articles;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -14,6 +14,7 @@ public class AddArticleRequest {
     @NotNull
     @Size(min=1, max=10)
     private String title;
+
     @NotNull
     private String content;
 

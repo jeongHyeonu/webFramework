@@ -1,4 +1,4 @@
-package study.hyeonu.dto;
+package study.hyeonu.dto.Articles;
 
 import lombok.Getter;
 import study.hyeonu.domain.Article;

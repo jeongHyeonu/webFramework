@@ -6,9 +6,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import study.hyeonu.config.error.exception.ArticleNotFoundException;
 import study.hyeonu.domain.Article;
-import study.hyeonu.dto.AddArticleRequest;
-import study.hyeonu.dto.UpdateArticleRequest;
+import study.hyeonu.domain.Comment;
+import study.hyeonu.dto.Articles.AddArticleRequest;
+import study.hyeonu.dto.Comments.AddCommentRequest;
+import study.hyeonu.dto.Articles.UpdateArticleRequest;
 import study.hyeonu.repository.BlogRepository;
+import study.hyeonu.repository.CommentRepository;
 
 import java.util.List;
 
@@ -17,6 +20,7 @@ import java.util.List;
 public class BlogService {
 
     private final BlogRepository blogRepository;
+    private final CommentRepository commentRepository;
 
     public Article save(AddArticleRequest request, String userName) {
         return blogRepository.save(request.toEntity(userName));
@@ -56,6 +60,13 @@ public class BlogService {
         if (!article.getAuthor().equals(userName)) {
             throw new IllegalArgumentException("not authorized");
         }
+    }
+
+    public Comment addComment(AddCommentRequest request, String userName){
+        Article article = blogRepository.findById(request.getArticleId())
+                .orElseThrow(()->new IllegalArgumentException("not found : "+request.getArticleId()));
+
+        return commentRepository.save(request.toEntity(userName,article));
     }
 
 }
